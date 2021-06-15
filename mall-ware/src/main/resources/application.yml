@@ -1,0 +1,57 @@
+ipAddr: 127.0.0.1
+server:
+  port: 11000
+spring:
+  application:
+    name: mall-ware
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://${ipAddr}:3306/mall_wms?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8&autoReconnect=true&failOverReadOnly=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8333
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  rabbitmq:
+    host: 192.168.1.130
+    port: 5672
+    # 指定虚拟主机
+    virtual-host: /
+    username: guest
+    password: guest
+    listener:
+      simple:
+        # 手动确认接受消息
+        acknowledge-mode: manual
+  zipkin:
+    base-url: 10.43.1.52:9411/
+    # 关闭我们自动的服务发现功能
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+logging:
+  level:
+    org.zrclass.mall.ware: debug
+myRabbitmq:
+  MQConfig:
+    queues: stock.release.stock.queue
+    delayQueue: stock.delay.queue
+    eventExchange: stock-event-exchange
+    routingKey: stock.locked
+    letterRoutingKey: stock.release
+    # 库存自动过期时间 单位:(毫秒)
+    ttl: 120000
